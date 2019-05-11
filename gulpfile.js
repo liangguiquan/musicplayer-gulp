@@ -1,11 +1,5 @@
 var gulp = require("gulp");
 
-
-// gulp中插件的应用  
-// 下载插件 npm install gulp-htmlclean--save-dev
-// -->取到插件 var htmlClean = require("gulp-htmlclean");
-// -->应用插件 .pipe(htmlClean())  // 执行插件
-
 // 压缩html文件
 var htmlClean = require("gulp-htmlclean");
 
@@ -32,12 +26,10 @@ var autoprefixer = require("autoprefixer");
 var connect = require("gulp-connect");
 
 
-
 var folder = {
     src: "src/",
     dist: "dist/"
 }
-
 
 // 在命令行中设置环境变量
 // $ export NODE_ENV=development 
@@ -48,20 +40,14 @@ var devMod = process.env.NODE_ENV == "development";
 // console.log(devMod);
 
 
-// gulp.task("html",function(){
-//     gulp.src(folder.src+"html/*")           // 取出文件
-//     .pipe(connect.reload())                 // 监听到文件改变时自动刷新页面
-//     .pipe(htmlClean())                      // 处理压缩文件
-//     .pipe(gulp.dest(folder.dist+"html/"))   // 输出文件
-// })
 
 gulp.task("html", function () {
-    var page = gulp.src(folder.src + "html/*")          // 取出文件
-        .pipe(connect.reload());                        // 监听到文件改变时自动刷新页面
-    if (!devMod) {                                      // 判断是否压缩，在生产环境中要压缩，开发环境不用压缩
-        page.pipe(htmlClean())                          // 处理压缩文件
+    var page = gulp.src(folder.src + "html/*")     
+        .pipe(connect.reload());                      
+    if (!devMod) {                                     
+        page.pipe(htmlClean())                         
     }
-    page.pipe(gulp.dest(folder.dist + "html/"))         // 输出文件
+    page.pipe(gulp.dest(folder.dist + "html/"))         
 })
 
 gulp.task("image", function () {
@@ -69,15 +55,6 @@ gulp.task("image", function () {
         .pipe(imageMIN())
         .pipe(gulp.dest(folder.dist + "image/"))
 })
-
-// gulp.task("css",function(){
-//     gulp.src(folder.src+"css/*")
-//     .pipe(connect.reload())
-//     .pipe(less())
-//     .pipe(postCss([autoprefixer()]))
-//     .pipe(cleanCss())
-//     .pipe(gulp.dest(folder.dist+"css/"))
-// })
 
 gulp.task("css", function () {
     var page = gulp.src(folder.src + "css/*")
@@ -90,13 +67,7 @@ gulp.task("css", function () {
     page.pipe(gulp.dest(folder.dist + "css/"))
 })
 
-// gulp.task("js",function(){
-//     gulp.src(folder.src+"js/*")
-//     .pipe(connect.reload())
-//     .pipe(debug())
-//     .pipe(uglify())
-//     .pipe(gulp.dest(folder.dist+"js/"))
-// })
+
 
 gulp.task("js", function () {
     var page = gulp.src(folder.src + "js/*")
@@ -115,25 +86,11 @@ gulp.task("server", function () {   // 开启服务器
     });
 })
 
-gulp.task("watch", function () {     // 监听文件改变，自动改变dist中相应的文件
-    gulp.watch(folder.src + "html/*", ["html"]),  // 监听folder.src+"html/"下面的所有文件，文件有变化就执行["html"]任务
+gulp.task("watch", function () {    
+    gulp.watch(folder.src + "html/*", ["html"]),  
         gulp.watch(folder.src + "css/*", ["css"]),
         gulp.watch(folder.src + "js/*", ["js"])
 })
 
 
 gulp.task("default", ["html", "image", "css", "js", "server", "watch"]);
-
-// 流：一串二进制的数
-
-// gulp.src()
-// gulp.dest()
-// gulp.task()
-// gulp.watch()
-// .pipe()
-
-
-
-
-// gulp:  runner task   任务运行器
-// webpack: module bundle  模块打包器
